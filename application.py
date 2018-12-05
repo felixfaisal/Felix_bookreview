@@ -38,9 +38,10 @@ def register():
         
 @app.route("/success", methods=["POST","GET"])
 def success():
-       username=request.args.get("username")
-       
-  	
+       username1=request.form.get("username1")
+       password1=request.form.get("password1")
+       db.execute("INSERT INTO data VALUES(:username,:password)",{"username":username1, "password":password1})
+       db.commit()
   	
   
        return render_template("success.html")
