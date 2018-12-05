@@ -1,4 +1,18 @@
 {% extends "layout.html" %}
+{% block head %}
+  <link rel= "stylesheet" type= "text/css" href=   "{{ url_for('static',filename='styles/response.css') }}">
+{% endblock %}
 {% block body %}
-    Welcome {{ username }}!. We hope you enjoy your session. 
+
+ {% for datas in data%}
+	{% if  datas.username == username and datas.password==password %}
+      
+     <h1> Hello {{username}} </h1>
+       
+	{% else	%}
+	Please register yourself here..
+	 {% endif %}
+ {% endfor %}
+       
+  
 {% endblock %}
