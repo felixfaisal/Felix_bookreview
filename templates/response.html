@@ -6,11 +6,14 @@
 
  {% for datas in data%}
 	{% if  datas.username == username and datas.password==password %}
-      
-     <h1> Hello {{username}} </h1>
-         
-	 {% endif %}
+
+   <h1> Hello {{username}} </h1>
+
+
+   {% else %}
+   <h1>Please Register yourself</h1>
+   {% endif %}
  {% endfor %}
-       
-  
+
+
 {% endblock %}
