@@ -2,7 +2,7 @@ import os
 import psycopg2
 import sqlalchemy
 
-from flask import Flask,render_template, request, session
+from flask import Flask,render_template, request, session, redirect, url_for, escape
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -18,36 +18,48 @@ Session(app)
 
 @app.route("/")
 def index():
-   
-   return render_template("index.html")
+     if 'username' in session:
+      username = session['username']
+      return 'Logged in as ' + username + '<br>' + \
+      "<b><a href = '/logout'>click here to log out</a></b>"
+     return "You are not logged in <br><a href = '/login'></b>" + \
+      "click here to log in</b></a>"
 @app.route("/login")
 def login():
-   
-   return render_template("login.html")
+    if request.method == 'POST':
+      session['username'] = request.form['username']
+    return render_template("login.html")
 
-@app.route("/response", methods=["POST"])
+@app.route("/response", methods=["POST","GET"])
 def response():
+   count=0
    data = db.execute("SELECT * FROM data ")
    username=request.form.get("username")
    password=request.form.get("password")
-   return render_template("response.html", username=username, password=password, data=data)
+   return render_template("response.html", username=username, password=password, data=data, count=count)
+
+@app.route("/logout")
+def logout():
+   session.pop('username', None)
+   return redirect("/")
+
+
+@app.route("/search", methods=["POST","GET"])
+def search():
+    book=request.form.get("book")
+    return render_template("search.html", book=book)
+
 
 @app.route("/register", methods=["POST","GET"])
 def register():
 	return render_template("register.html")
-        
+
 @app.route("/success", methods=["POST","GET"])
 def success():
        username1=request.form.get("username1")
        password1=request.form.get("password1")
        db.execute("INSERT INTO data VALUES(:username,:password)",{"username":username1, "password":password1})
        db.commit()
-  	
-  
+
+
        return render_template("success.html")
-    
-
-
-
-   
-   
