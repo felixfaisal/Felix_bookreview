@@ -46,8 +46,12 @@ def logout():
 
 @app.route("/search", methods=["POST","GET"])
 def search():
-    book=request.form.get("book")
-    return render_template("search.html", book=book)
+    searchresults = []
+    search_string=request.form.get("book")	
+    if search_string:
+	    searchresults=db.execute("SELECT * FROM data")
+
+    return render_template("search.html", search_string=search_string, searchresults=searchresults)
 
 
 @app.route("/register", methods=["POST","GET"])

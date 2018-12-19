@@ -2,5 +2,17 @@
 {% block head %}
   {% endblock %}
 {% block body %}
-  <h1>{{book}}</h1>
+<form action="/search" method="post">
+  <div class="form-group">
+    <label for="searchbook">Search</label>
+    <input type="text" class="form-control" id="searchbook" aria-describedby="emailHelp" placeholder="Enter book name" name='book'>
+    <small id="emailHelp" class="form-text text-muted">You can search for any book</small>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% for results in searchresults%}
+    {% if search_string in results.username %}
+    <h5>{{results.username}}</h5>
+    {% endif %}
+{% endfor %}
 {% endblock %}
